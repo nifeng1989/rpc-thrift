@@ -1,7 +1,7 @@
 package net.fengni.thrift.demo.client;
 
-import net.fengni.thrift.demo.core.Service;
 import net.fengni.thrift.demo.core.Student;
+import net.fengni.thrift.demo.core.StudentService;
 import net.fengni.util.zk.ZKUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TException;
@@ -14,7 +14,7 @@ import org.apache.thrift.transport.TTransportException;
 /**
  * Created by fengni on 2016/6/1.
  */
-public class Client {
+public class SyncClient {
     public static String SERVER_IP = "localhost";
     public static int SERVER_PORT = 8090;
     public static final int TIMEOUT = 30000;
@@ -33,12 +33,12 @@ public class Client {
             // 协议要和服务端一致
             TProtocol protocol = new TBinaryProtocol(transport);
             // TProtocol protocol = new TCompactProtocol(transport);
-            // TProtocol protocol = new TJSONProtocol(transport);
-            Service.Client client = new Service.Client(protocol);
+            //TProtocol protocol = new TJSONProtocol(transport);
+            StudentService.Client client = new StudentService.Client(protocol);
             transport.open();
             Student student = new Student(1,userName,true,(short)25);
-            String result = client.put(student);
-            System.out.println("Thrify client result =: " + result);
+            int sid = client.addStudent(student);
+            System.out.println("Thrify client result =: " + sid);
         } catch (TTransportException e) {
             e.printStackTrace();
         } catch (TException e) {
@@ -56,7 +56,7 @@ public class Client {
      * @param args
      */
     public static void main(String[] args) {
-        Client client = new Client();
+        SyncClient client = new SyncClient();
         client.startClient("Michael");
 
     }

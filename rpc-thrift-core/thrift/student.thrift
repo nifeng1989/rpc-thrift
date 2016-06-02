@@ -6,6 +6,10 @@ struct Student{
     3:bool sex,
     4:i16 age
 }
-service Service{
-    string put(1:Student s)
+service StudentService{
+    i32 addStudent(1:Student s),
+    Student getStudent(1:i32 sid),
+    i32 updateStudent(1:Student s),
+    i32 deleteStudentById(1:i32 sid),
+    i32 deleteStudent(1:Student s)
 }
